@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { stockService } from '../services/stockService';
-import { ArrowLeft, Heart } from 'lucide-react';
+import { ArrowLeft, Heart, LogOut } from 'lucide-react';
 
 const StockDetail = () => {
     const { symbol } = useParams();
@@ -41,14 +41,21 @@ const StockDetail = () => {
             return;
         }
 
+        if (!user.id) {
+            alert('User session invalid. Retry login');
+            // logout();
+            navigate('/login');
+            return;
+        }
+
         try {
             setAddingToFavorites(true);
             if (isFavorite) {
-                await stockService.removeFromFavorites(stock.symbol, user.id || 'temp-user-id');
+                await stockService.removeFromFavorites(stock.symbol, user.id);
                 setIsFavorite(false);
                 alert('Removed from favorites');
             } else {
-                await stockService.addToFavorites(stock.symbol, user.id || 'temp-user-id');
+                await stockService.addToFavorites(stock.symbol, user.id);
                 setIsFavorite(true);
                 alert('Added to favorites');
             }

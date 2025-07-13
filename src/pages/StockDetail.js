@@ -20,6 +20,22 @@ const StockDetail = () => {
         }
     }, [symbol]);
 
+    useEffect(() => {
+        if (user && user.id && stock) {
+            checkIfFavorite();
+        }
+    }, [user, stock]);
+
+    const checkIfFavorite = async () => {
+        try {
+            const favorites = await stockService.getFavoriteStocks(user.id);
+            const isFav = favorites.some(favStock => favStock.symbol === stock.symbol);
+            setIsFavorite(isFav);
+        } catch (error) {
+            console.error('Error checking favorites:', error);
+        }
+    }
+
     const fetchStockDetail = async () => {
         try {
             setLoading(true);
@@ -136,15 +152,18 @@ const StockDetail = () => {
                     <button
                         onClick={handleAddToFavorites}
                         disabled={addingToFavorites}
-                        className={isFavorite ? 'btn-primary' : 'btn-secondary'}
+                        className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
+                            isFavorite 
+                                ? 'bg-red-500 text-white hover:bg-red-600' 
+                                : 'bg-gray-100 text-gray-700 hover: bg-gray-100 text-gray-200'}`}
                         style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            backgroundColor: isFavorite ? '#dc2626' : '#f3f4f6',
+                            backgroundColor: isFavorite ? '#ef4444' : '#f3f4f6',
                             color: isFavorite ? 'white' : '#374151'
                         }}
                     >
-                        <Heart style={{ width: '16px', height: '16px', marginRight: '8px' }} />
+                        <Heart style={{ width: '16px', height: '16px',
+                            fill: isFavorite ? 'currentcolor' : 'none'
+                         }} />
                         <span>{addingToFavorites ? 'Loading...' : isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}</span>
                     </button>
                 )}

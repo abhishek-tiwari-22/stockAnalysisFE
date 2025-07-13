@@ -30,9 +30,9 @@ export const AuthProvider = ({ children }) => {
     const login = async (credentials) => {
         try {
             const response = await api.post('/auth/signin', credentials);
-            const { token, username, email } = response.data;
+            const { id, token, username, email } = response.data;
 
-            const userData = { username, email };
+            const userData = { id, username, email };
 
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(userData));
@@ -52,9 +52,9 @@ export const AuthProvider = ({ children }) => {
     const register = async (userData) => {
         try {
             const response = await api.post('/auth/signup', userData);
-            const { token, username, email } = response.data;
+            const { id, token, username, email } = response.data;
 
-            const user = { username, email };
+            const user = { id, username, email };
 
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user));
