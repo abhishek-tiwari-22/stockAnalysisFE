@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://stockanalyzebe-production.up.railway.app/api'
+  ? 'http://ec2-13-204-203-144.ap-south-1.compute.amazonaws.com:8081/api'
   : 'http://localhost:8081/api';
 
 const api = axios.create({
