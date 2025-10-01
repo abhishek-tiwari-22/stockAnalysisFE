@@ -7,9 +7,6 @@ const API_BASE_URL = process.env.NODE_ENV === 'production'
 const api = axios.create({
     baseURL: API_BASE_URL,
     timeout: 10000,
-    httpsAgent: new https.Agent({
-        rejectUnauthorized: false // bypass SSL verification
-    })
 });
 
 // Request interceptor to add auth token
